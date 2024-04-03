@@ -19,6 +19,12 @@ return {
         -- each config.
         -- See ":help lspconfig-root-detection" for info on the lspconfig.util functions.
         config = {
+            clangd = {
+                capabilities = {
+                    -- Get rid of "multiple different client offset_encodings detected for buffer" warnings when using clangd with copilot
+                    offsetEncoding = { "utf-16" },
+                },
+            },
             please = function()
                 return {
                     cmd = { 'plz', 'tool', 'lps' },
@@ -112,21 +118,21 @@ return {
         vim.keymap.del('t', '<C-k>')
 
         -- Set wezterm tab title to the filename of the current buffer
-        vim.api.nvim_create_autocmd({"BufEnter"}, {
-            callback = function(event)
-                local title = "vim"
-                if event.file ~= "" then
-                    title = string.format("vim: %s", vim.fs.basename(event.file))
-                end
-
-                vim.fn.system({"wezterm", "cli", "set-tab-title", title})
-            end,
-        })
-
-        vim.api.nvim_create_autocmd({"VimLeave"}, {
-            callback = function()
-                vim.fn.system({"wezterm", "cli", "set-tab-title", ""})
-            end,
-        })
+        -- vim.api.nvim_create_autocmd({"BufEnter"}, {
+        --     callback = function(event)
+        --         local title = "vim"
+        --         if event.file ~= "" then
+        --             title = string.format("vim: %s", vim.fs.basename(event.file))
+        --         end
+        --
+        --         vim.fn.system({"wezterm", "cli", "set-tab-title", title})
+        --     end,
+        -- })
+        --
+        -- vim.api.nvim_create_autocmd({"VimLeave"}, {
+        --     callback = function()
+        --         vim.fn.system({"wezterm", "cli", "set-tab-title", ""})
+        --     end,
+        -- })
     end
 }

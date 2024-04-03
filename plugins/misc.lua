@@ -73,4 +73,16 @@ return {
     "max397574/better-escape.nvim",
     enabled = false,
   },
+  {
+    "stevearc/aerial.nvim",
+    opts = {
+      -- Limit the kinds of symbols shown in symbol map brought up by <leader>lS
+      filter_kind = {
+        "Class",
+        "Constructor",
+        "Function",
+        "Method",
+      },
+    }
+  },
 }

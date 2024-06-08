@@ -4,7 +4,15 @@ return {
   {
     "folke/flash.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      modes = {
+        search = {
+          -- Disable flash for normal searches (/, ?). Can always toggle with <c-s>
+          -- I disabled because it interferes with typing in the search string.
+          enabled = false,
+        },
+      },
+    },
     -- stylua: ignore
     keys = {
       { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },

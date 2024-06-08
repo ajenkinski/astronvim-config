@@ -17,23 +17,9 @@ return {
   { "tpope/vim-abolish", cmd = {"Abolish", "Subvert"} },
 
   -- https://github.com/simrat39/rust-tools.nvim
-  "simrat39/rust-tools.nvim",
+  -- "simrat39/rust-tools.nvim",
   {
-    "williamboman/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = { "rust_analyzer" },
-      servers = {
-        clangd = {
-          capabilities = {
-            -- Get rid of "multiple different client offset_encodings detected for buffer" warnings when using clangd with copilot
-            offsetEncoding = { "utf-16" },
-          },
-        },
-      },
-    },
-  },
-  {
-    "nvim-autopairs",
+    "windwp/nvim-autopairs",
     opts = {
       fast_wrap = {
         -- Configure the shortcut key for quickly wrapping text in delimiters such as (), {}, etc.
@@ -61,12 +47,6 @@ return {
         },
       },
     },
-  },
-  {
-    'mrjones2014/smart-splits.nvim',
-    -- turn off lazy loading to work with wezterm integration.  We want plugin to set user var
-    -- indicating vim is running on vim startup
-    lazy = false,
   },
   -- AstroNvim includes this, but I don't want it.  It makes typing "jk" in insert mode be treated as Esc
   {

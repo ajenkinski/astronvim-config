@@ -1,6 +1,9 @@
--- Return true if a < b, but treating sequences of digits as numbers.
--- This means "problem-9-foo.txt" will come before "problem-10-bar.txt", without having to 0-pad numbers.
--- This will be used to customize neo-tree sorting.
+--- Return true if a < b, but treating sequences of digits as numbers.
+--- This means "problem-9-foo.txt" will come before "problem-10-bar.txt", without having to 0-pad numbers.
+--- This will be used to customize neo-tree sorting.
+--- @param a string
+--- @param b string
+--- @return boolean
 local function mixed_cmp_strings(a, b)
   if string.find(a, "%d") == nil or string.find(b, "%d") == nil then
     return a < b

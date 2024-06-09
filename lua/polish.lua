@@ -24,6 +24,8 @@ vim.api.nvim_create_user_command('ProjectOpen', 'tabnew +tcd\\ <args>', {
 })
 
 -- Set wezterm tab title to the filename of the current buffer
+-- Turns out this is unneeded, because the vim `title` and `titleold` options can do this.
+-- See `:help title` for more info.
 -- vim.api.nvim_create_autocmd({"BufEnter"}, {
 --     callback = function(event)
 --         local title = "vim"

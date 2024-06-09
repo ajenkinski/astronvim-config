@@ -14,12 +14,14 @@ return {
           -- motivation for including it with codelldb is so users won't need Xcode installed.  It's unnecessary if you
           -- do have Xcode. Deleting this version makes codelldb fall back on using the version that comes with Xcode.
 
-          -- use realpath in case command is a symlink
-          local cmd = vim.uv.fs_realpath(config.adapters.executable.command)
-          local codelldb_dir = vim.fs.dirname(cmd)
-          local dsfile = vim.fs.joinpath(codelldb_dir, "extension/lldb/bin/debugserver")
-          if vim.uv.fs_stat(dsfile) then
-            vim.uv.fs_rename(dsfile, dsfile .. "_")
+          if vim.uv.os_uname().sysname == "Darwin" then
+            -- use realpath in case command is a symlink
+            local cmd = vim.uv.fs_realpath(config.adapters.executable.command)
+            local codelldb_dir = vim.fs.dirname(cmd)
+            local dsfile = vim.fs.joinpath(codelldb_dir, "extension/lldb/bin/debugserver")
+            if vim.uv.fs_stat(dsfile) then
+              vim.uv.fs_rename(dsfile, dsfile .. "_")
+            end
           end
 
           require('mason-nvim-dap').default_setup(config)

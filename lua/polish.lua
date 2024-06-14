@@ -16,13 +16,6 @@ vim.filetype.add({
 -- delete to end of line
 vim.keymap.del('t', '<C-k>')
 
--- Open a project in a new vim tab.  For now this just means setting the tab's cwd to the specified
--- directory, but I could expand it to do more.
-vim.api.nvim_create_user_command('ProjectOpen', 'tabnew +tcd\\ <args>', {
-  nargs = 1,
-  complete = 'dir',
-})
-
 -- Set wezterm tab title to the filename of the current buffer
 -- Turns out this is unneeded, because the vim `title` and `titleold` options can do this.
 -- See `:help title` for more info.

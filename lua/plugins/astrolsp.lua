@@ -115,6 +115,10 @@ return {
         --   desc = "Toggle LSP semantic highlight (buffer)",
         --   cond = function(client) return client.server_capabilities.semanticTokensProvider and vim.lsp.semantic_tokens end,
         -- },
+        ["<Leader>lW"] = {
+          function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end,
+          desc = "Search Dynamic Workspace Symbols",
+        },
       },
     },
     -- A custom `on_attach` function to be run after the default `on_attach` function

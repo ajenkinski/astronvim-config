@@ -1,3 +1,4 @@
+-- This is disabled because I'm using rust-pack.lua instead
 if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 return {

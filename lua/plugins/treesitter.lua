@@ -3,20 +3,19 @@
 ---@type LazySpec
 return {
   "nvim-treesitter/nvim-treesitter",
-  opts = function(_, opts)
-    -- add more things to the ensure_installed table protecting against community packs modifying it
-    opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
+  opts = {
+    ensure_installed = {
       "lua",
       "vim",
       -- add more arguments for adding more treesitter parsers
-    })
+    },
 
-    -- Automatically install available tree-sitter parsers when first entering a buffer a new file type.
-    opts.auto_install = true
+    -- Automatically install available tree-sitter parsers when first entering a buffer with a new file type.
+    auto_install = true,
     -- sync_install=false was causing errors.  When it's false, it allows mutliple installs to happen at the same time. 
     -- It seems sometimes it was trying to install the same parser twice at the same time, causing an error.
-    opts.sync_install = true
-  end,
+    sync_install = true,
+  },
   config = function(_, opts)
       -- what astronvim parent config would have done
       require("nvim-treesitter.configs").setup(opts)

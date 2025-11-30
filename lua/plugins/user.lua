@@ -1,85 +1,69 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- You can also add or configure plugins by creating files in this `plugins/` folder
--- Here are some examples:
-
+-- Plugins that I haven't wanted to move to their own file yet
 ---@type LazySpec
 return {
-
-  -- == Examples of Adding Plugins ==
-
-  "andweeb/presence.nvim",
   {
-    "ray-x/lsp_signature.nvim",
-    event = "BufRead",
-    config = function() require("lsp_signature").setup() end,
+    "tpope/vim-fugitive",
+    -- Load the first time a git-managed file is opened.  This is to work around a conflict with gitsigns, which 
+    -- is also loaded on this event. Gitsigns has its own :Gitsigns user command, which prevents this package
+    -- from being autoloaded based on the command if gitsigns loads first, because then nvim treats :Git as an
+    -- abbreviation of :Gitsigns instead of as a missing command.  See ":help user-cmd-ambiguous" for info on
+    -- nvim's abbreviation behaviour.
+    event = "User AstroGitFile",
+    cmd = "Git",
   },
+  -- Extension to vim-fugitive to allow opening files in github with the GBrowse command
+  { "tpope/vim-rhubarb",  event = "User AstroGitFile", dependencies = { "tpope/vim-fugitive" } },
 
-  -- == Examples of Overriding Plugins ==
+  -- https://github.com/tpope/vim-abolish
+  { "tpope/vim-abolish", cmd = {"Abolish", "Subvert"} },
 
-  -- customize alpha options
-  {
-    "goolord/alpha-nvim",
-    opts = function(_, opts)
-      -- customize the dashboard header
-      opts.section.header.val = {
-        " █████  ███████ ████████ ██████   ██████",
-        "██   ██ ██         ██    ██   ██ ██    ██",
-        "███████ ███████    ██    ██████  ██    ██",
-        "██   ██      ██    ██    ██   ██ ██    ██",
-        "██   ██ ███████    ██    ██   ██  ██████",
-        " ",
-        "    ███    ██ ██    ██ ██ ███    ███",
-        "    ████   ██ ██    ██ ██ ████  ████",
-        "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
-        "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
-        "    ██   ████   ████   ██ ██      ██",
-      }
-      return opts
-    end,
-  },
-
-  -- You can disable default plugins as follows:
-  { "max397574/better-escape.nvim", enabled = false },
-
-  -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
-  {
-    "L3MON4D3/LuaSnip",
-    config = function(plugin, opts)
-      require "astronvim.plugins.configs.luasnip"(plugin, opts) -- include the default astronvim config that calls the setup call
-      -- add more custom luasnip configuration such as filetype extend or custom snippets
-      local luasnip = require "luasnip"
-      luasnip.filetype_extend("javascript", { "javascriptreact" })
-    end,
-  },
-
+  -- https://github.com/simrat39/rust-tools.nvim
+  -- "simrat39/rust-tools.nvim",
   {
     "windwp/nvim-autopairs",
-    config = function(plugin, opts)
-      require "astronvim.plugins.configs.nvim-autopairs"(plugin, opts) -- include the default astronvim config that calls the setup call
-      -- add more custom autopairs configuration such as custom rules
-      local npairs = require "nvim-autopairs"
-      local Rule = require "nvim-autopairs.rule"
-      local cond = require "nvim-autopairs.conds"
-      npairs.add_rules(
-        {
-          Rule("$", "$", { "tex", "latex" })
-            -- don't add a pair if the next character is %
-            :with_pair(cond.not_after_regex "%%")
-            -- don't add a pair if  the previous character is xxx
-            :with_pair(
-              cond.not_before_regex("xxx", 3)
-            )
-            -- don't move right when repeat character
-            :with_move(cond.none())
-            -- don't delete if the next character is xx
-            :with_del(cond.not_after_regex "xx")
-            -- disable adding a newline when you press <cr>
-            :with_cr(cond.none()),
+    opts = {
+      fast_wrap = {
+        -- Configure the shortcut key for quickly wrapping text in delimiters such as (), {}, etc.
+        -- After typing opening delimiter, hit short cut key to select where closing delimiter should go.
+        -- See :help nvim-autopairs for more info
+        map = "<C-e>",
+
+        -- Make color of potentially wrapped text easier to see
+        highlight_grey = "Pmenu",
+      },
+    }
+  },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    opts = {
+      dim_inactive = {
+        enabled = true,
+        percentage = 0.01,
+      },
+      color_overrides = {
+        mocha = {
+          -- make the border between splits easier to see
+          crust = "#43465A",
         },
-        -- disable for .vim files, but it work for another filetypes
-        Rule("a", "a", "-vim")
-      )
-    end,
+      },
+    },
+  },
+  -- AstroNvim includes this, but I don't want it.  It makes typing "jk" in insert mode be treated as Esc
+  {
+    "max397574/better-escape.nvim",
+    enabled = false,
+  },
+  {
+    "stevearc/aerial.nvim",
+    opts = {
+      -- Limit the kinds of symbols shown in symbol map brought up by <leader>lS
+      filter_kind = {
+        "Class",
+        "Constructor",
+        "Function",
+        "Method",
+      },
+    }
   },
 }

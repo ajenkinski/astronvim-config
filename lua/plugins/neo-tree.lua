@@ -83,9 +83,9 @@ return {
               dir = vim.fs.dirname(dir)
             end
 
-            require('telescope.builtin').live_grep({
-              search_dirs = { dir },
-              prompt_title = string.format('Grep in [%s]', vim.fs.basename(dir)),
+            require("snacks").picker.grep({
+              dirs = { dir },
+              title = string.format('Grep in [%s]', vim.fs.basename(dir)),
             })
           end,
           start_command_with = function(state)

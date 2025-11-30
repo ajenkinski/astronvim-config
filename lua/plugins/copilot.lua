@@ -15,17 +15,16 @@ return {
       }
     end,
   },
+  -- https://github.com/CopilotC-Nvim/CopilotChat.nvim
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
     dependencies = {
-      { "github/copilot.vim" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+      { "nvim-lua/plenary.nvim", branch = "master" },
     },
+    build = "make tiktoken",
     opts = {
       debug = false, -- Enable debugging
-      -- See Configuration section for rest
+      -- See Configuration section for options
     },
-    -- See Commands section for default commands if you want to lazy load on them
   },
 }

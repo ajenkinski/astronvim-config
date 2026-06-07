@@ -46,33 +46,33 @@ return {
       -- Get rid of "multiple different client offset_encodings detected for buffer" warnings when using clangd with copilot
       clangd = { capabilities = { offsetEncoding = "utf-8" } },
       please = {
-        cmd = { 'plz', 'tool', 'lps' },
+        cmd = { "plz", "tool", "lps" },
         filetypes = { "bzl" },
-        root_dir = require("lspconfig.util").root_pattern(".plzconfig")
+        root_dir = require("lspconfig.util").root_pattern ".plzconfig",
       },
 
       terraformls = {
         -- Without this, it uses compass/ as the root directory, treating all .tf files
         -- in compass as if they're part of the same module.
         root_dir = function(startpath)
-          local utils = require('lspconfig.util')
+          local utils = require "lspconfig.util"
 
           local function matcher(path)
             if vim.fn.isdirectory(path) then
               -- If path contains a BUILD file, or path/.. doesn't contain any .tf files, then path is root_dir
-              if vim.fn.filereadable(path .. '/BUILD') then
-                return path
-              end
+              if vim.fn.filereadable(path .. "/BUILD") then return path end
               local tf_pat = utils.path.escape_wildcards(vim.fs.dirname(path)) .. "/*.tf"
-              if #vim.fn.glob(tf_pat) == 0 then
-                return path
-              end
+              if #vim.fn.glob(tf_pat) == 0 then return path end
             end
           end
 
           startpath = utils.strip_archive_subpath(startpath)
           return utils.search_ancestors(startpath, matcher)
-        end
+        end,
+      },
+
+      elixirls = {
+        cmd = { vim.fn.stdpath "data" .. "/mason/packages/elixir-ls/language_server.sh" },
       },
     },
     -- customize how language servers are attached

@@ -61,7 +61,7 @@ return {
         -- python3 provider with:
         -- loaded_python3_provider = 0,
         -- See ":help provider-python" for more info
-        -- python3_host_prog = "/Users/ajenkins/Envs/nvim-plugins/bin/python",
+        python3_host_prog = "/Users/ajenkins/Envs/nvim-plugins/bin/python",
       },
     },
     -- Mappings can be configured through AstroCore as well.

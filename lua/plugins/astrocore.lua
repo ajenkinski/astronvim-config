@@ -52,8 +52,6 @@ return {
         -- configure global vim variables (vim.g)
         -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
         -- This can be found in the `lua/lazy_setup.lua` file
-        neovide_cursor_animation_length = 0.01,
-        neovide_scroll_animation_length = 0.1,
 
         -- Explicitly specify python to use for neovim's python3 provider.  Without this, startup time is slow
         -- because it searches for a suitable installation.  If this virtualenv goes away, it could also cause
@@ -93,6 +91,7 @@ return {
         -- ["<C-S>"] = false,
       },
     },
+
     -- Define global user commands here
     commands = {
       -- Open a project in a new vim tab.  For now this just means setting the tab's cwd to the specified
@@ -103,6 +102,20 @@ return {
         complete = "dir",
         desc = "Open a project in a new vim tab",
       },
+    },
+
+    treesitter = {
+      ensure_installed = {
+        "lua",
+        "vim",
+        -- add more arguments for adding more treesitter parsers
+      },
+
+      -- Automatically install available tree-sitter parsers when first entering a buffer with a new file type.
+      auto_install = true,
+      -- sync_install=false was causing errors.  When it's false, it allows mutliple installs to happen at the same time.
+      -- It seems sometimes it was trying to install the same parser twice at the same time, causing an error.
+      sync_install = true,
     },
   },
 }

@@ -4,4 +4,4 @@
 
 -- Nvim by default maps <C-k> to switch to the next window.  Unmap it in terminal mode so it can
 -- delete to end of line
-vim.keymap.del('t', '<C-k>')
+vim.keymap.del("t", "<C-k>")

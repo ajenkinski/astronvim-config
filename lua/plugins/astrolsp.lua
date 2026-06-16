@@ -24,7 +24,7 @@ return {
           -- "go",
         },
         ignore_filetypes = { -- disable format on save for specified filetypes
-          "bzl",
+          -- "python",
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
@@ -38,51 +38,23 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      "please",
+      -- "pyright"
     },
-    -- customize language server configuration options passed to `lspconfig`
-    ---@diagnostic disable: missing-fields
+    -- customize language server configuration passed to `vim.lsp.config`
+    -- client specific configuration can also go in `lsp/` in your configuration root (see `:h lsp-config`)
     config = {
-      -- Get rid of "multiple different client offset_encodings detected for buffer" warnings when using clangd with copilot
-      clangd = { capabilities = { offsetEncoding = "utf-8" } },
-      please = {
-        cmd = { "plz", "tool", "lps" },
-        filetypes = { "bzl" },
-        root_dir = require("lspconfig.util").root_pattern ".plzconfig",
-      },
-
-      terraformls = {
-        -- Without this, it uses compass/ as the root directory, treating all .tf files
-        -- in compass as if they're part of the same module.
-        root_dir = function(startpath)
-          local utils = require "lspconfig.util"
-
-          local function matcher(path)
-            if vim.fn.isdirectory(path) then
-              -- If path contains a BUILD file, or path/.. doesn't contain any .tf files, then path is root_dir
-              if vim.fn.filereadable(path .. "/BUILD") then return path end
-              local tf_pat = utils.path.escape_wildcards(vim.fs.dirname(path)) .. "/*.tf"
-              if #vim.fn.glob(tf_pat) == 0 then return path end
-            end
-          end
-
-          startpath = utils.strip_archive_subpath(startpath)
-          return utils.search_ancestors(startpath, matcher)
-        end,
-      },
-
-      elixirls = {
-        cmd = { vim.fn.stdpath "data" .. "/mason/packages/elixir-ls/language_server.sh" },
-      },
+      -- ["*"] = { capabilities = {} }, -- modify default LSP client settings such as capabilities
+      -- elixirls = {
+      --   cmd = { vim.fn.stdpath "data" .. "/mason/packages/elixir-ls/language_server.sh" },
+      -- },
     },
     -- customize how language servers are attached
     handlers = {
-      -- a function without a key is simply the default handler, functions take two parameters, the server name and the configured options table for that server
-      -- function(server, opts) require("lspconfig")[server].setup(opts) end
+      -- a function with the key `*` modifies the default handler, functions takes the server name as the parameter
+      -- ["*"] = function(server) vim.lsp.enable(server) end
 
-      -- the key is the server that is being setup with `lspconfig`
+      -- the key is the server that is being setup with `vim.lsp.config`
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
-      -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {
@@ -101,7 +73,7 @@ return {
           -- the rest of the autocmd options (:h nvim_create_autocmd)
           desc = "Refresh codelens (buffer)",
           callback = function(args)
-            if require("astrolsp").config.features.codelens then vim.lsp.codelens.refresh { bufnr = args.buf } end
+            if require("astrolsp").config.features.codelens then vim.lsp.codelens.enable(true, { bufnr = args.buf }) end
           end,
         },
       },
@@ -119,13 +91,13 @@ return {
           function() require("astrolsp.toggles").buffer_semantic_tokens() end,
           desc = "Toggle LSP semantic highlight (buffer)",
           cond = function(client)
-            return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
+            return client:supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
           end,
         },
       },
     },
     -- A custom `on_attach` function to be run after the default `on_attach` function
-    -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
+    -- takes two parameters `client` and `bufnr`  (`:h lsp-attach`)
     on_attach = function(client, bufnr)
       -- this would disable semanticTokensProvider for all clients
       -- client.server_capabilities.semanticTokensProvider = nil
